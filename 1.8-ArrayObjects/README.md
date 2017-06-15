@@ -260,18 +260,25 @@ ECMAScript 3 和 ECMAScript 5 在 `Array.prototype` 中定义了一些很有用�
 
 ### 转换方法
 
-所有对象都具有 `toLocaleString()`、`toString()` 和 `valueOf()` 方法。其中，调用数组的 `toString()` 和 `valueOf()` 方法会返回相同的值，即由数组中每个值的字符串形式拼接而成的一个以逗号分隔的字符串。实际上，为了创建这个字符串会调用数组每一项的 `toString()` 方法。例如：
+所有对象都具有 `valueOf()`、 `toString()` 和 `toLocaleString()` 方法。他们的用途如下：
+
+- `valueOf()`：当调用数组的 `valueOf()` 方法，会返回 `Array` 对象的原始值。`valueOf()` 方法通常由 JavaScript 在后台自动调用，并不显式地出现在代码中。
+- `toString()`：当调用数组的 `toString()` 方法，会返回以逗号分隔数组中每个值的字符串。为了创建这个字符串会调用数组每一项的 `toString()` 方法。
+- `toLocaleString()`：当调用数组的 `toLocaleString()` 方法，会返回以逗号分隔数组中每个值的字符串。为了创建这个字符串会调用数组每一项的 `toLocaleString()` 方法。
+
+如以下代码所示：
 
 ``` javascript
 var colors = ["red", "blue", "green"];  // 创建一个包含3个字符串的数组
-alert(colors.toString()); // red,blue,green
-alert(colors.valueOf());  // red,blue,green
-alert(colors);            // red,blue,green
+console.log(colors);            // ["red", "blue", "green"]
+console.log(colors.valueOf());  // ["red", "blue", "green"]
+console.log(colors.toString()); // red,blue,green
+alert(colors.valueOf());        // red,blue,green
 ```
 
-在这里，我们首先显式地调用了 `toString()` 和 `valueOf()` 方法，以便返回数组的字符串表示，每个值的字符串表示拼接成了一个字符串，中间以逗号分隔。最后一行代码直接将数组传递给了 `alert()`。由于 `alert()`要接收字符串参数，所以它会在后台调用 `toString()` 方法，由此会得到与直接调用 `toString()` 方法相同的结果。
+在这里，我们首先显式地调用了 `colors` 和 `colors.valueOf()`，返回的都是数组对象。然后，我们又显式地调用了 `toString()` 方法，返回了以逗号分隔数组中每个值的字符串。最后一行代码直接将 `colors.valueOf()` 传递给了 `alert()`。由于 `alert()`要接收字符串参数，所以它会在后台调用 `toString()` 方法，由此会得到与直接调用 `toString()` 方法相同的结果。
 
-另外，`toLocaleString()` 方法经常也会返回与 `toString()` 和 `valueOf()` 方法相同的值，但也不总是如此。当调用数组的 `toLocaleString()` 方法时，它也会创建一个数组值的以逗号分隔的字符串。而与前两个方法唯一的不同之处在于，这一次为了取得每一项的值，调用的是每一项的 `toLocaleString()` 方法，而不是 `toString()` 方法。例如：
+当调用数组的 `toLocaleString()` 方法时，它会创建以逗号分隔数组中每个值的字符串。与 `toString()` 方法唯一的不同之处在于，这一次为了取得每一项的值，调用的是每一项的 `toLocaleString()` 方法，而不是 `toString()` 方法。例如：
 
 ``` javascript
 var person1 = {
@@ -293,12 +300,11 @@ var person2 = {
 };
 
 var people = [person1, person2];
-alert(people);                           // Nicholas,Greg
-alert(people.toString());                // Nicholas,Greg
-alert(people.toLocaleString());          // Nikolaos,Grigorios
+console.log(people.toString());                // Nicholas,Greg
+console.log(people.toLocaleString());          // Nikolaos,Grigorios
 ```
 
-数组继承的 `toLocaleString()`、`toString()` 和 `valueOf()`方法，在默认情况下都会以逗号分隔的字符串的形式返回数组项。而如果使用 `join()` 方法，则可以使用不同的分隔符来构建这个字符串。`join()` 方法只接收一个参数，即用作分隔符的字符串，然后返回包含所有数组项的字符串。例如：
+数组继承的 `toLocaleString()` 和 `toString()` 方法，在默认情况下都会以逗号分隔的字符串的形式返回数组项。而如果使用 `join()` 方法，则可以使用不同的分隔符来构建这个字符串。`join()` 方法只接收一个参数，即用作分隔符的字符串，然后返回包含所有数组项的字符串。例如：
 
 ``` javascript
 var colors = ["red", "green", "blue"];
@@ -307,6 +313,8 @@ console.log(colors.join("||"));   // red||green||blue
 ```
 
  如果数组中的某一项的值是 `null` 或者 `undefined`，那么该值在 `join()`、`toLocaleString()`、`toString()` 和 `valueOf()` 方法返回的结果中以空字符串表示。
+
+> 数组和字符串之间是可以互相转换的，使用 `String` 对象的原型方法 `split()` 即可实现该功能。这个方法可以基于指定的分隔符将一个字符串分割成多个子字符串，并将结果放在一个数组中。例如：`"red,blue,green,yellow".split(",")` 结果是 `["red", "blue", "green", "yellow"]`。更多 `split()` 方法的说明会在后面章节中详细介绍。
 
 ### 栈方法
 

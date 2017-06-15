@@ -39,7 +39,6 @@ function Person(name, age, job){
 
 var person1 = new Person("Stone", 28, "Software Engineer");
 var person2 = new Person("Sophie", 29, "English Teacher");
-
 ```
 
 在这个例子中，我们创建了一个自定义构造函数 `Person()`，并通过该构造函数创建了两个普通对象 `person1` 和 `person2`，这两个普通对象均包含3个属性和1个方法。
@@ -273,11 +272,11 @@ Person.prototype.sayHi = function(){
 friend.sayHi();   // "hi"（没有问题！）
 ```
 
-以上代码先创建了 `Person` 的一个实例，并将其保存在 `person` 中。然后，下一条语句在 `Person.prototype` 中添加了一个方法 `sayHi()`。即使 `person` 实例是在添加新方法之前创建的，但它仍然可以访问这个新方法。其原因可以归结为实例与原型之间的松散连接关系。当我们调用 `person.sayHi()` 时，首先会在实例中搜索名为 `sayHi` 的属性，在没找到的情况下，会继续搜索原型。因为实例与原型之间的连接只不过是一个指针，而非一个副本，因此就可以在原型中找到新的 `sayHi` 属性并返回保存在那里的函数。
+以上代码先创建了 `Person` 的一个实例，并将其保存在 `friend` 中。然后，下一条语句在 `Person.prototype` 中添加了一个方法 `sayHi()`。即使 `person` 实例是在添加新方法之前创建的，但它仍然可以访问这个新方法。其原因可以归结为实例与原型之间的松散连接关系。当我们调用 `friend.sayHi()` 时，首先会在实例中搜索名为 `sayHi` 的属性，在没找到的情况下，会继续搜索原型。因为实例与原型之间的连接只不过是一个指针，而非一个副本，因此就可以在原型中找到新的 `sayHi` 属性并返回保存在那里的函数。
 
 尽管可以随时为原型添加属性和方法，并且修改能够立即在所有对象实例中反映出来，但如果是重写整个原型对象，那么情况就不一样了。我们知道，调用构造函数时会为实例添加一个指向最初原型的 `[[Prototype]]` 指针，而把原型修改为另外一个对象就等于切断了构造函数与最初原型之间的联系。请记住：实例中的指针仅指向原型，而不指向构造函数。看下面的例子。
 
-```
+```javascript
 function Person(){}
 
 var friend = new Person();
@@ -501,6 +500,63 @@ console.log(son.getValue === son.__proto__.__proto__.getValue); // true
 - `Object.prototype` 是顶级对象，所有对象都继承自它。
 - `Object.prototype.__proto__ === null` ，说明原型链到 `Object.prototype` 终止。
 - `Function.__proto__` 指向 `Function.prototype`。
+
+## 关卡
+
+根据描述写出对应的代码。
+
+```javascript
+// 挑战一
+// 1.定义一个构造函数 Animal，它有一个 name 属性，以及一个 eat() 原型方法。
+// 2.eat() 的方法体为：console.log(this.name + " is eating something.")。
+// 3.new 一个 Animal 的实例 tiger，然后调用 eat() 方法。
+// 4.用 __proto__ 模拟 new Animal() 的过程，然后调用 eat() 方法。
+
+var Animal = function(name){
+	// 待补充的代码
+};
+
+var tiger = new Animal("tiger");
+// 待补充的代码
+
+var tiger2 = {};
+// 待补充的代码
+```
+```javascript
+// 挑战二
+// 1.定义一个构造函数 Bird，它继承自 Animal，它有一个 name 属性，以及一个 fly() 原型方法。
+// 2.fly() 的方法体为：console.log(this.name + " want to fly higher.");。
+// 3.new 一个 Bird 的实例 pigeon，然后调用 eat() 和 fly() 方法。
+// 4.用 __proto__ 模拟 new Bird() 的过程，然后用代码解释 pigeon2 为何能调用 eat() 方法。
+
+var Bird = function(name){
+  	// 待补充的代码
+}
+
+var pigeon = new Bird("pigeon");
+// 待补充的代码
+
+var pigeon2 = {};
+// 待补充的代码
+```
+
+```javascript
+// 挑战三
+// 1.定义一个构造函数 Swallow，它继承自 Bird，它有一个 name 属性，以及一个 nesting() 原型方法。
+// 2.nesting() 的方法体为：console.log(this.name + " is nesting now.");。
+// 3.new 一个 Swallow 的实例 yanzi，然后调用 eat()、fly() 和 nesting() 方法。
+// 4.用 __proto__ 模拟 new Swallow() 的过程，然后用代码解释 yanzi2 为何能调用 eat() 方法。
+
+var Swallow = function(name){
+  	// 待补充的代码
+}
+
+var yanzi = new Swallow("yanzi");
+// 待补充的代码
+
+var yanzi2 = {};
+// 待补充的代码
+```
 
 ## 更多
 
